@@ -1,5 +1,8 @@
 const Course = require('../models/Course');
-const { mongooseToObject } = require('../../utill/mongoose');
+const {
+    mongooseToObject,
+    mutipleMongooseToObject,
+} = require('../../utill/mongoose');
 
 class CourseController {
     // [GET] /courses/:slug
@@ -20,12 +23,11 @@ class CourseController {
 
     // [POST] /courses/store
     store(req, res, next) {
-        const formData = req.body;
-        formData.image = `https://files.fullstack.edu.vn/f8-prod/courses/2.png`;
-        const course = new Course(formData);
+        req.body.image = `https://files.fullstack.edu.vn/f8-prod/courses/2.png`;
+        const course = new Course(req.body);
         course
             .save()
-            .then(() => res.redirect('/'))
+            .then(() => res.redirect('/me/stored/courses'))
             .catch((error) => {});
     }
 
@@ -49,7 +51,21 @@ class CourseController {
 
     // [DELETE] /courses/:id
     destroy(req, res, next) {
+        Course.delete({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+
+    // [DELETE] /courses/:id/force
+    forceDestroy(req, res, next) {
         Course.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+
+    // [PATCH] /courses/:id/restore
+    restore(req, res, next) {
+        Course.restore({ _id: req.params.id })
             .then(() => res.redirect('back'))
             .catch(next);
     }
