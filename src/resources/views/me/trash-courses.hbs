@@ -27,7 +27,8 @@
             </select>
 
             <button
-                class='btn btn-primary btn-sm check-all-submit-btn disabled'
+                class='btn btn-primary btn-sm check-all-submit-btn'
+                disabled
             >Thực hiện</button>
         </div>
     </div>
@@ -144,8 +145,6 @@
     checkboxAll.prop("checked", isCheckedAll); renderCheckSubmitBtn();})
     function renderCheckSubmitBtn() { var checkCount =
     $("input[name='courseIds[]']:checked").length; if (checkCount > 0) {
-    checkAllSubmitBtn.removeClass('disabled'); } else {
-    checkAllSubmitBtn.addClass('disabled'); } } checkAllSubmitBtn.on('submit',
-    function (e) { var isSubmittable = !$(this).hasClass('disabled'); if
-    (!isSubmittable) { e.preventDefault(); } })});
+    checkAllSubmitBtn.attr('disabled', false); } else {
+    checkAllSubmitBtn.attr('disabled', true); } } });
 </script>
